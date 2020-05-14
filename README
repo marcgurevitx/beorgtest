@@ -1,0 +1,32 @@
+Нужно написать решение, состоящее из двух приложений, как минимум с консольным
+интерфейсом - клиент и сервер. Суть решения - удаленный монитор содержимого каталога.
+Серверу нужно каким-то образом скормить путь к каталогу - например, через ключ запуска
+или конфиг. Клиенту нужно скормить адрес сервера (или, желательно, message broker'а, об
+этом ниже).
+Сервер следит за изменениями в заданном каталоге, и, если содержимое изменилось, оно
+должно быстро обновиться на клиенте.
+В идеале хотелось бы увидеть решение с использованием amqp, если раньше не приходилось с
+ним работать, это будет показатель того, насколько вы быстро осваиваетесь с незнакомыми
+технологиями.
+
+---
+Solution:
+- Server and client are CLI programs, both using RabbitMQ
+- Server declares a unique fanout exchange and sends there info when directory changes
+- Client creates nameless queue bound to that exchange and prints received messages
+
+Install:
+
+    pip install .
+
+Run RabbitMQ:
+
+    rabbitmq-server
+
+Start test server:
+
+    bt-server --dir=PATH/TO/DIR     # will output EXCHANGE_ID
+
+Start test client:
+
+    bt-client EXCHANGE_ID
