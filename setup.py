@@ -2,6 +2,7 @@ from setuptools import setup
 
 setup(
     name="beorgtest",
+    version="0.0",
     description="удаленный монитор содержимого каталога",
     author="Марк Гуревич",
     packages=[ "beorgtest" ],

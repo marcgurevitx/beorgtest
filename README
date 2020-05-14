@@ -9,11 +9,16 @@
 ним работать, это будет показатель того, насколько вы быстро осваиваетесь с незнакомыми
 технологиями.
 
+
 ---
 Solution:
-- Server and client are CLI programs, both using RabbitMQ
-- Server declares a unique fanout exchange and sends there info when directory changes
-- Client creates nameless queue bound to that exchange and prints received messages
+- Server and client are CLI programs, both using AMQP broker (RabbitMQ)
+- Server listens to "<SERVER ID>-in" exchange replying with full state
+- Server publishes updates in "<SERVER ID>-out"
+- Client requests full state and then listens for updates
+- Supply command line option "--broker=..." if other than "localhost:5672"
+- Supply "--rate=X" to the server as in "check directory content X times per second" (float)
+
 
 Install:
 
@@ -25,8 +30,8 @@ Run RabbitMQ:
 
 Start test server:
 
-    bt-server --dir=PATH/TO/DIR     # will output EXCHANGE_ID
+    bt-server --dir=PATH/TO/DIR     # prints SERVER_ID
 
 Start test client:
 
-    bt-client EXCHANGE_ID
+    bt-client SERVER_ID
